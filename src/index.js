@@ -8,7 +8,8 @@ import {o} from 'atp-sugar';
 const provideContext = contextTypes => Component => class ContextProvider extends React.Component {
     static childContextTypes = contextTypes;
     getChildContext() {
-        return o(contextTypes).map((_, key) => this.props[key]);
+        const context = o(contextTypes).map((_, key) => this.props[key]).raw;
+        return context;
     }
     render() {
         return <Component {...this.props} />
