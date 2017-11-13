@@ -1,10 +1,10 @@
-/**
- * Created by Andy on 7/9/2017.
- */
-
 import React from "react";
 import {o} from 'atp-sugar';
-    ''
+
+/**
+ * HOC that extracts properties from the wrapped component and makes them available to child components
+ * @param {Object} contextTypes - A PropTypes object specifying which properties to expose
+ */
 const provideContext = contextTypes => Component => class ContextProvider extends React.Component {
     static childContextTypes = contextTypes;
     getChildContext() {
@@ -16,6 +16,10 @@ const provideContext = contextTypes => Component => class ContextProvider extend
     }
 };
 
+/**
+ * HOC that injects context properties into the wrapped component
+ * @param {Object} contextTypes - A PropTypes object specifying which context variables to make available to this component
+ */
 const addContext = contextTypes => Component => class ContextConsumer extends React.Component {
     static contextTypes = contextTypes;
     render() {
