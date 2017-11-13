@@ -32,7 +32,7 @@ const Consumer = addContext(contextDef)(props =>
 );
 
 const Provider = provideContext(contextDef)(props =>
-    <div>{React.Children.toArray(props.children)}</div>
+    <div>{props.children}</div>
 );
 
 describe('ATP-React-Context', () => {
