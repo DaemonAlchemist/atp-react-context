@@ -6,10 +6,33 @@ import chai, {expect} from 'chai';
 import chaiEnzyme from 'chai-enzyme'
 import React from 'react';
 import {provideContext, addContext} from 'atp-react-context';
-import {shallow} from 'enzyme';
+import {mount} from 'enzyme';
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import PropTypes from 'prop-types';
+import { JSDOM } from'jsdom';
+
+//--BEGIN DOM SETUP--//
+const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
+const { window } = jsdom;
+
+function copyProps(src, target) {
+    const props = Object.getOwnPropertyNames(src)
+        .filter(prop => typeof target[prop] === 'undefined')
+        .reduce((result, prop) => ({
+            ...result,
+            [prop]: Object.getOwnPropertyDescriptor(src, prop),
+        }), {});
+    Object.defineProperties(target, props);
+}
+
+global.window = window;
+global.document = window.document;
+global.navigator = {
+    userAgent: 'node.js',
+};
+copyProps(window, global);
+//--END DOM SETUP--//
 
 configure({ adapter: new Adapter() });
 
@@ -36,18 +59,19 @@ const Provider = provideContext(contextDef)(props =>
 );
 
 describe('ATP-React-Context', () => {
-    it('should inject context from providers to descendents', () => {
-        const doc = shallow(
+    //TODO:  May need to render in full to get this to work
+    it('should inject context from providers to descendants', () => {
+        const doc = mount(
             <div>
                 <Provider foo="FOO" bar="BAR" baz="BAZ">
                     <div>
-                        <Consumer />
+                        <Consumer/>
                     </div>
                 </Provider>
             </div>
         );
-        expect(doc.find(Consumer)).to.have.prop('foo', 'FOO');
-        expect(doc.find(Consumer)).to.have.prop('bar', 'BAR');
-        expect(doc.find(Consumer)).to.have.prop('baz', 'BAZ');
-    });
+        expect(doc.find('li').at(0)).to.have.html('<li>FOO</li>');
+        expect(doc.find('li').at(1)).to.have.html('<li>BAR</li>');
+        expect(doc.find('li').at(2)).to.have.html('<li>BAZ</li>');
+    })
 });
