@@ -59,7 +59,6 @@ const Provider = provideContext(contextDef)(props =>
 );
 
 describe('ATP-React-Context', () => {
-    //TODO:  May need to render in full to get this to work
     it('should inject context from providers to descendants', () => {
         const doc = mount(
             <div>
@@ -73,5 +72,5 @@ describe('ATP-React-Context', () => {
         expect(doc.find('li').at(0)).to.have.html('<li>FOO</li>');
         expect(doc.find('li').at(1)).to.have.html('<li>BAR</li>');
         expect(doc.find('li').at(2)).to.have.html('<li>BAZ</li>');
-    })
+    });
 });
