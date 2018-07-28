@@ -1,6 +1,6 @@
 {
   "name": "atp-react-context",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A React context provider module",
   "main": "lib/index.js",
   "scripts": {
